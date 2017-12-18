@@ -1,18 +1,32 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
+#define POPULATION_SIZE
+
+#define POW(x) x*x
 
 using namespace std;
 
-struct dot {
+typedef vector<int> CHROMOSSOME;
+typedef vector<CHROMOSSOME> POPULATION;
+
+typedef struct vertex {
     int id;
     int x;
     int y;
     int capacity;
     int demand;
-}typedef DOT;
+    int distance;
+    struct vertex* center;
+}VERTEX;
 
-istream& operator>>(std::istream& is, DOT& mydot)
-{
+typedef struct graph{
+    vector<VERTEX*> listofdots;
+    VERTEX* center;
+    float totaldist;
+}GRAPH;
+
+istream& operator>>(std::istream& is, VERTEX& mydot) {
     cin >> mydot.x;
     cin >> mydot.y;
     cin >> mydot.capacity;
@@ -21,15 +35,18 @@ istream& operator>>(std::istream& is, DOT& mydot)
     return is;
 }
 
-bool operator==(const DOT& a, const DOT& b) {
+bool operator==(const VERTEX& a, const VERTEX& b) {
 
-    if (a.x == b.x && a.y == b.y) {
-        return true;
-    }
-    return false;
+    return a.x == b.x && a.y == b.y;
 }
 
-int pmedian(vector<DOT> v, int nmedians) {
+float distance(VERTEX a, VERTEX b){
+
+    return sqrt(POW(a.x-b.x) + POW(a.y-b.y));
+
+}
+
+int pmedian(vector<VERTEX> v, int nmedians) {
 
     return 0;
 }
@@ -39,8 +56,8 @@ int main() {
     int ndots;
     int nmedians;
     int trash;
-    DOT aux;
-    vector<DOT> v;
+    VERTEX aux;
+    vector<VERTEX> v;
 
     cin >> ndots;
     cin >> nmedians;

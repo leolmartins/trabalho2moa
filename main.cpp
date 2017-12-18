@@ -3,6 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <unordered_map>
+#include <algorithm>
 
 #define POPULATION_SIZE 20
 #define NUMBER_OF_ITERATIONS 100
@@ -63,6 +64,8 @@ bool vector_contains(vector<int> v, int x){
     return false;
 }
 
+bool sort_comparator(int x, int y){ return (get_vertex(x).demand > get_vertex(y).demand); }
+
 float evaluate_solution(CHROMOSSOME solution){
     float obj = 0;
 
@@ -74,6 +77,7 @@ float evaluate_solution(CHROMOSSOME solution){
 POPULATION build_initial_population(){
 
     int aux;
+    vector<int> sorted;
     vector<int> medians;
     vector<int> medians_capacity;
     CHROMOSSOME aux_chromossome;
@@ -94,19 +98,23 @@ POPULATION build_initial_population(){
             medians_capacity[j] = get_vertex(aux).capacity-get_vertex(aux).demand;
         }
 
+        // sort vertexes by demand
+        for(int j = 0; j< NUMBER_OF_VERTEXES; j++) sorted.push_back(j);
+        sort(sorted.begin(), sorted.end(), sort_comparator);
+
         // choose a median for each vertex
         for(int j = 0; j < NUMBER_OF_VERTEXES; j++){
-            if(vector_contains(medians, j)) aux_chromossome[j] = j;
+            if(vector_contains(medians, sorted[j])) aux_chromossome[sorted[j]] = sorted[j];
             else{
                 aux = rand()%NUMBER_OF_MEDIANS;
 
                 // the chosen median need to be able to support the vertex
-                while( medians_capacity[aux]-get_vertex(j).demand < 0 ){
+                while( medians_capacity[aux]-get_vertex(sorted[j]).demand < 0 ){
                     aux = (aux + 1)%NUMBER_OF_MEDIANS;
                 }
 
-                aux_chromossome[j] = medians[aux];
-                medians_capacity[aux] -= get_vertex(j).demand;
+                aux_chromossome[sorted[j]] = medians[aux];
+                medians_capacity[aux] -= get_vertex(sorted[j]).demand;
 
             }
         }
@@ -124,6 +132,7 @@ POPULATION build_initial_population(){
         aux_chromossome.clear();
         medians.clear();
         medians_capacity.clear();
+        sorted.clear();
 
     }
 

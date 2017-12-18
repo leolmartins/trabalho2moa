@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#define POPULATION_SIZE
+#include <ctime>
+#define POPULATION_SIZE 20
 
 #define POW(x) x*x
 
@@ -9,6 +10,8 @@ using namespace std;
 
 typedef vector<int> CHROMOSSOME;
 typedef vector<CHROMOSSOME> POPULATION;
+int NUMBER_OF_VERTEXES;
+int NUMBER_OF_MEDIANS;
 
 typedef struct vertex {
     int id;
@@ -46,40 +49,95 @@ float distance(VERTEX a, VERTEX b){
 
 }
 
-int pmedian(vector<VERTEX> v, int nmedians) {
+VERTEX* get_vertex(vector<VERTEX> v, int id){
+    for(int i=0; i<v.size(); i++){
+        if(v[i].id == id) return &v[i];
+    }
+    return NULL;
+}
+
+bool contains(vector<int> v, int x){
+    for(int i = 0; i < v.size(); i++){
+        if(v[i] == x) return true;
+    }
+    return false;
+}
+
+POPULATION build_initial_solution(vector<VERTEX> v){
+
+    int aux;
+    vector<int> medians;
+    CHROMOSSOME aux_chromossome;
+    POPULATION initial_population;
+
+    for(int i = 0; i < POPULATION_SIZE; i++){
+
+        // choose the medians
+        for(int j = 0; j < NUMBER_OF_MEDIANS; j++){
+            do{
+                aux = rand()%NUMBER_OF_VERTEXES;
+            }while(contains(medians,aux));
+            medians[j] = aux;
+        }
+
+        // choose a median for each vertex
+        for(int j = 0; j < NUMBER_OF_VERTEXES; j++){
+            if(contains(medians, j)) aux_chromossome[j] = j;
+            else aux_chromossome[j] = medians[rand()%NUMBER_OF_MEDIANS];
+        }
+
+        // add this solution to the population
+        initial_population[i] = aux_chromossome;
+
+        cout << "\n [";
+        for(int j = 0; j < medians.size(); j++) cout << " " << medians[j];
+        cout << " ]";
+
+        aux_chromossome.clear();
+        medians.clear();
+    }
+
+    return initial_population;
+}
+
+int p_median(vector<VERTEX> v) {
+
+    POPULATION population = build_initial_solution(v);
+
+
 
     return 0;
 }
 
 int main() {
+    srand((unsigned)time(0));
 
-    int ndots;
-    int nmedians;
+
     int trash;
     VERTEX aux;
     vector<VERTEX> v;
 
-    cin >> ndots;
-    cin >> nmedians;
+    cin >> NUMBER_OF_VERTEXES;
+    cin >> NUMBER_OF_MEDIANS;
     cin >> trash;
     cin >> trash;
 
-    for (int i = 0; i < ndots; i++) {
+    for (int i = 0; i < NUMBER_OF_VERTEXES; i++) {
         cin >> aux;
         aux.id = i;
         v.push_back(aux);
     }
 
-    for (int i = 0; i < ndots; i++) {
+    /*for (int i = 0; i < NUMBER_OF_VERTEXES; i++) {
         cout << "id: " << v[i].id << "\n";
         cout << "x: " << v[i].x << "\n";
         cout << "y: " << v[i].y << "\n";
         cout << "capacity: " << v[i].capacity << "\n";
         cout << "demand: " << v[i].demand << "\n";
         cout << "\n";
-    }
+    }*/
 
-    pmedian(v, nmedians);
+    p_median(v);
 
     cin >> trash;
     return 0;

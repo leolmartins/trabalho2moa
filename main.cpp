@@ -119,7 +119,7 @@ POPULATION build_initial_population(){
         cout << " ]";
         cout << "\n [";
         for(int j = 0; j < aux_chromossome.size(); j++) cout << " " << aux_chromossome[j];
-        cout << " ]";
+        cout << " ]\n";
 
         aux_chromossome.clear();
         medians.clear();
@@ -155,6 +155,9 @@ float p_median() {
         // mutates the chromossomes
         //
 
+        // local search
+        //
+
         // evaluates each chromossome in the population
         for(int i = 0; i<POPULATION_SIZE; i++) sol_score[i] = evaluate_solution(population[i]);
 
@@ -174,8 +177,6 @@ int main() {
 
     cin >> NUMBER_OF_VERTEXES;
     cin >> NUMBER_OF_MEDIANS;
-    cin >> trash;
-    cin >> trash;
 
     for (int i = 0; i < NUMBER_OF_VERTEXES; i++) {
         cin >> aux;
@@ -183,16 +184,15 @@ int main() {
         LIST_OF_VERTEXES.insert({i, aux});
     }
 
-    /*for (int i = 0; i < NUMBER_OF_VERTEXES; i++) {
-        cout << "id: " << LIST_OF_VERTEXES.find(i)->second.x << "\n";
+    for (int i = 0; i < NUMBER_OF_VERTEXES; i++) {
+        cout << "id: " << LIST_OF_VERTEXES.find(i)->second.id << "\n";
         cout << "x: " << LIST_OF_VERTEXES.find(i)->second.x << "\n";
         cout << "y: " << LIST_OF_VERTEXES.find(i)->second.y << "\n";
         cout << "capacity: " << LIST_OF_VERTEXES.find(i)->second.capacity << "\n";
         cout << "demand: " << LIST_OF_VERTEXES.find(i)->second.demand << "\n";
         cout << "\n";
-    }*/
+    }
 
-    //p_median(v);
     p_median();
 
     cin >> trash;

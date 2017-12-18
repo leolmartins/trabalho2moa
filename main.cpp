@@ -63,7 +63,7 @@ bool contains(vector<int> v, int x){
     return false;
 }
 
-POPULATION build_initial_solution(vector<VERTEX> v){
+POPULATION build_initial_population(){
 
     int aux;
     vector<int> medians;
@@ -71,6 +71,9 @@ POPULATION build_initial_solution(vector<VERTEX> v){
     POPULATION initial_population;
 
     for(int i = 0; i < POPULATION_SIZE; i++){
+
+        aux_chromossome.resize(NUMBER_OF_VERTEXES);
+        medians.resize(NUMBER_OF_MEDIANS);
 
         // choose the medians
         for(int j = 0; j < NUMBER_OF_MEDIANS; j++){
@@ -87,14 +90,18 @@ POPULATION build_initial_solution(vector<VERTEX> v){
         }
 
         // add this solution to the population
-        initial_population[i] = aux_chromossome;
+        initial_population.push_back(aux_chromossome);
 
-        cout << "\n [";
+        /*cout << "\n [";
         for(int j = 0; j < medians.size(); j++) cout << " " << medians[j];
         cout << " ]";
+        cout << "\n [";
+        for(int j = 0; j < aux_chromossome.size(); j++) cout << " " << aux_chromossome[j];
+        cout << " ]";*/
 
         aux_chromossome.clear();
         medians.clear();
+
     }
 
     return initial_population;
@@ -102,7 +109,8 @@ POPULATION build_initial_solution(vector<VERTEX> v){
 
 int p_median(vector<VERTEX> v) {
 
-    POPULATION population = build_initial_solution(v);
+    // build an initial population
+    POPULATION population = build_initial_population();
 
 
 

@@ -66,6 +66,30 @@ bool vector_contains(vector<int> v, int x){
 
 bool sort_comparator(int x, int y){ return (get_vertex(x).demand > get_vertex(y).demand); }
 
+vector<pair<int, int>> select_couples(POPULATION population, vector<float> sol_score){
+
+    int aux;
+    vector<int> tournament;
+
+    for(int i=0; i < 5; i++){
+
+
+        for(int j=0; j < 5; j++){
+            do{
+                aux = rand()%population.size();
+            }while(vector_contains(tournament,aux));
+            tournament.push_back(aux);
+        }
+
+        sort(tournament.begin(), tournament.end(), sort_comparator);
+
+
+
+
+    }
+
+};
+
 float evaluate_solution(CHROMOSSOME solution){
     float obj = 0;
 
@@ -143,8 +167,10 @@ float p_median() {
 
     int return_value;
     int iteration = 1;
+    vector<pair<int, int>> couples;
     vector<float> sol_score;
     sol_score.resize(POPULATION_SIZE);
+
 
     // build an initial population
     POPULATION population = build_initial_population();
@@ -156,7 +182,7 @@ float p_median() {
     while(NUMBER_OF_ITERATIONS >= iteration){
 
         // selects chromossomes for reproduction
-        //
+        //couples = select_couples(population, sol_score);
 
         // reproducts the selected chromossomes
         //
@@ -180,9 +206,9 @@ float p_median() {
 int main() {
     srand((unsigned)time(0));
 
+    float return_value;
     int trash;
     VERTEX aux;
-    //vector<VERTEX> v;
 
     cin >> NUMBER_OF_VERTEXES;
     cin >> NUMBER_OF_MEDIANS;
@@ -202,7 +228,9 @@ int main() {
         cout << "\n";
     }
 
-    p_median();
+    return_value = p_median();
+
+    cout << "\nValor da solução: " << return_value << "\n" ;
 
     cin >> trash;
     return 0;
